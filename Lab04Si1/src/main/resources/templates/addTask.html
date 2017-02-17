@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
@@ -23,23 +23,42 @@
 <script type="text/javascript"
 	src="//cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-git.js"></script>
-<script>
-	$(function() {
-		var doc = new jsPDF();
-		var specialElementHandlers = {
-			'#editor' : function(element, renderer) {
-				return true;
-			}
-		};
 
-		$('#cmd').click(function() {
-			doc.fromHTML($('#content').html(), 15, 15, {
-				'width' : 170,
-				'elementHandlers' : specialElementHandlers
+<script type="text/javascript"
+	src="http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
+<script type="text/javascript"
+	src="http://www.shieldui.com/shared/components/latest/js/jszip.min.js"></script>
+
+
+<script type="text/javascript">
+	$(document).ready(
+			function() {
+
+				var element = $("#html-content-holder"); // global variable
+				var getCanvas; // global variable
+
+				$("#btn-Preview-Image").on('click', function() {
+					html2canvas(element, {
+						onrendered : function(canvas) {
+							$("#previewImage").append(canvas);
+							getCanvas = canvas;
+						}
+					});
+				});
+
+				$("#btn-Convert-Html2Image").on(
+						'click',
+						function() {
+							var imgageData = getCanvas.toDataURL("image/png");
+							// Now browser starts downloading it instead of just showing it
+							var newData = imgageData.replace(
+									/^data:image\/png/,
+									"data:application/octet-stream");
+							$("#btn-Convert-Html2Image").attr("download",
+									"your_pic_name.png").attr("href", newData);
+						});
+
 			});
-			doc.save('sample-file.pdf');
-		});
-	});
 </script>
 
 </head>
@@ -136,7 +155,7 @@
 			</div>
 		</div>
 	</div>
-	<div id="content">
+	<div id="html-content-holder">
 		<div class="tasktodo">
 			<h3 class="nameTask">
 				Tarefas para fazer:
@@ -377,8 +396,13 @@
 			</div>
 		</div>
 	</div>
-	<div id="editor"></div>
-	<button id="cmd">generate PDF</button>
+	
+	<input id="btn-Preview-Image" type="button" value="Preview" />
+	<a id="btn-Convert-Html2Image" href="#">Download</a>
+	<br />
+	<h3>Preview :</h3>
+	<div id="previewImage"></div>
+
 
 </body>
 
