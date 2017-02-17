@@ -212,13 +212,19 @@ body.addTask, #html-content-holder {
 
 #submit-add {
 	width: 87%;
-	margin-top: 130px;
+	margin-top: 50px;
 	margin-left: 3px;
 }
 
 #submit-addCreate {
 	width: 87%;
 	margin-top: 50px;
+	margin-left: 3px;
+}
+
+#submit-addSubTask{
+	width: 87%;
+	margin-top: 130px;
 	margin-left: 3px;
 }
 
