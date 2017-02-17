@@ -19,46 +19,26 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script
-	src="http://files.codepedia.info/uploads/iScripts/html2canvas.js"></script>
+	src="https://rawgit.com/niklasvh/html2canvas/master/dist/html2canvas.js"></script>
+<script type="text/javascript" src="static/html2canvas.js"></script>
 <script type="text/javascript"
 	src="//cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-git.js"></script>
 
-<script type="text/javascript"
-	src="http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
-<script type="text/javascript"
-	src="http://www.shieldui.com/shared/components/latest/js/jszip.min.js"></script>
-
 
 <script type="text/javascript">
-	$(document).ready(
-			function() {
-
-				var element = $("#html-content-holder"); // global variable
-				var getCanvas; // global variable
-
-				$("#btn-Preview-Image").on('click', function() {
-					html2canvas(element, {
-						onrendered : function(canvas) {
-							$("#previewImage").append(canvas);
-							getCanvas = canvas;
-						}
-					});
-				});
-
-				$("#btn-Convert-Html2Image").on(
-						'click',
-						function() {
-							var imgageData = getCanvas.toDataURL("image/png");
-							// Now browser starts downloading it instead of just showing it
-							var newData = imgageData.replace(
-									/^data:image\/png/,
-									"data:application/octet-stream");
-							$("#btn-Convert-Html2Image").attr("download",
-									"your_pic_name.png").attr("href", newData);
-						});
-
+	$(function() {
+		$('#btn-Convert-Html2Image').click(function() {
+			html2canvas($('#html-content-holder'), {
+				onrendered : function(canvas) {
+					var a = $('#download').get(0);
+					a.href = canvas.toDataURL("image/png")
+					a.download = 'somefilename.png';
+					a.click();
+				}
 			});
+		});
+	});
 </script>
 
 </head>
@@ -396,9 +376,9 @@
 			</div>
 		</div>
 	</div>
-	
-	<input id="btn-Preview-Image" type="button" value="Preview" />
-	<a id="btn-Convert-Html2Image" href="#">Download</a>
+
+	<input id="btn-Convert-Html2Image" type="button" value="Download" />
+	<a href="" id='download'></a>
 	<br />
 	<h3>Preview :</h3>
 	<div id="previewImage"></div>
